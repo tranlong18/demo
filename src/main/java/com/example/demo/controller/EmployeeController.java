@@ -28,8 +28,11 @@ public class EmployeeController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ApiResponse<EmployeeDTO>> getEmployeeById(@PathVariable("id") Long employeeId) {
-        EmployeeDTO employeeDTO = employeeService.getEmployeeById(employeeId);
+    public ResponseEntity<ApiResponse<EmployeeDTO>> getEmployeeById(@PathVariable("id") Long employeeId,
+                                                                    @RequestParam(value = "include", required = false) String include) {
+        EmployeeDTO employeeDTO = "account".equalsIgnoreCase(include) ?
+                employeeService.getEmployeeWithAccountById(employeeId) :
+                employeeService.getEmployeeById(employeeId);
         ApiResponse<EmployeeDTO> response = ApiResponse.<EmployeeDTO>builder()
                 .status(HttpStatus.OK.value())
                 .data(employeeDTO)
@@ -67,16 +70,6 @@ public class EmployeeController {
         ApiResponse<Void> response = ApiResponse.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
                 .message("Employee deleted successfully")
-                .build();
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/account/{id}")
-    public ResponseEntity<ApiResponse<EmployeeDTO>> getEmployeeWithAccountById(@PathVariable("id") Long employeeId) {
-        EmployeeDTO employeeDTO = employeeService.getEmployeeWithAccountById(employeeId);
-        ApiResponse<EmployeeDTO> response = ApiResponse.<EmployeeDTO>builder()
-                .status(HttpStatus.OK.value())
-                .data(employeeDTO)
                 .build();
         return ResponseEntity.ok(response);
     }
