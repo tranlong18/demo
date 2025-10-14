@@ -1,36 +1,19 @@
 package com.example.demo.mapper;
 
 import com.example.demo.dto.AccountDTO;
+import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Employee;
 
 public class EmployeeMapper {
     public static EmployeeDTO mapToEmployeeDTO(Employee employee) {
-        return new EmployeeDTO(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getGender(),
-                employee.getAge(),
-                null
-        );
-    }
-
-    public static Employee mapToEmployee(EmployeeDTO employeeDTO) {
-        return new Employee(
-                employeeDTO.getId(),
-                employeeDTO.getFirstName(),
-                employeeDTO.getLastName(),
-                employeeDTO.getGender(),
-                employeeDTO.getAge(),
-                null
-        );
-    }
-
-    public static EmployeeDTO mapToEmployeeWithAccountDTO(Employee employee) {
-
         AccountDTO accountDTO = new AccountDTO();
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        if (employee.getDepartment()!= null){
+            departmentDTO.setId(employee.getDepartment().getId());
+            departmentDTO.setName(employee.getDepartment().getName());
+        }
         if (employee.getAccount() != null) {
             accountDTO.setId(employee.getAccount().getId());
             accountDTO.setEmail(employee.getAccount().getEmail());
@@ -43,7 +26,20 @@ public class EmployeeMapper {
                 employee.getLastName(),
                 employee.getGender(),
                 employee.getAge(),
-                accountDTO
+                accountDTO,
+                departmentDTO
+        );
+    }
+
+    public static Employee mapToEmployee(EmployeeDTO employeeDTO) {
+        return new Employee(
+                employeeDTO.getId(),
+                employeeDTO.getFirstName(),
+                employeeDTO.getLastName(),
+                employeeDTO.getGender(),
+                employeeDTO.getAge(),
+                null,
+                null
         );
     }
 }

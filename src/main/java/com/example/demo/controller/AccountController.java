@@ -5,6 +5,7 @@ import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.service.AccountService;
 import com.example.demo.service.EmployeeService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
+    @Autowired
     private AccountService accountService;
 
     @PostMapping
@@ -35,11 +37,11 @@ public class AccountController {
                 .message("Account update successfully")
                 .data(savedAccount)
                 .build();
-        return  ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteAccount(@PathVariable("id") Long accountId){
+    public ResponseEntity<ApiResponse<Void>> deleteAccount(@PathVariable("id") Long accountId) {
         accountService.deleteAccount(accountId);
         ApiResponse<Void> response = ApiResponse.<Void>builder()
                 .status(HttpStatus.OK.value())
