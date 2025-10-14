@@ -6,10 +6,14 @@ import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Employee;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class EmployeeMapper {
     public static EmployeeDTO mapToEmployeeDTO(Employee employee) {
         AccountDTO accountDTO = new AccountDTO();
         DepartmentDTO departmentDTO = new DepartmentDTO();
+        Set<Long> projectIds = new HashSet<Long>();
         if (employee.getDepartment()!= null){
             departmentDTO.setId(employee.getDepartment().getId());
             departmentDTO.setName(employee.getDepartment().getName());
@@ -27,7 +31,8 @@ public class EmployeeMapper {
                 employee.getGender(),
                 employee.getAge(),
                 accountDTO,
-                departmentDTO
+                departmentDTO,
+                projectIds
         );
     }
 
@@ -38,6 +43,7 @@ public class EmployeeMapper {
                 employeeDTO.getLastName(),
                 employeeDTO.getGender(),
                 employeeDTO.getAge(),
+                null,
                 null,
                 null
         );
