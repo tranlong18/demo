@@ -52,7 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResourceNotFoundException("Employee is not exist with given id: " + employeeId));
         employee.setFirstName(updateEmployee.getFirstName());
-        employee.setFirstName(updateEmployee.getLastName());
+        employee.setLastName(updateEmployee.getLastName());
+        employee.setAge(updateEmployee.getAge());
+        employee.setGender(updateEmployee.getGender());
         Employee updatedEmployee = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDTO(updatedEmployee);
     }
