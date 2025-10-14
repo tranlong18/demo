@@ -4,6 +4,7 @@ import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
+    @Autowired
     private EmployeeService employeeService;
 
     @PostMapping
@@ -47,6 +49,7 @@ public class EmployeeController {
                 employeeService.getAllEmployees();
         ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
                 .status(HttpStatus.OK.value())
+                .message(String.valueOf(employees.size()) + "employees")
                 .data(employees)
                 .build();
         return ResponseEntity.ok(response);
@@ -72,5 +75,17 @@ public class EmployeeController {
                 .message("Employee deleted successfully")
                 .build();
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse<EmployeeDTO>> addDepartmentForEmployee(@RequestParam Long employeeId,
+                                                                             @RequestParam Long departmentId) {
+        EmployeeDTO employeeAddedDepartment = employeeService.addDepartmentForEmployee(employeeId, departmentId);
+        ApiResponse<EmployeeDTO> response = ApiResponse.<EmployeeDTO>builder()
+                .status(HttpStatus.CREATED.value())
+                .message("Add successfully")
+                .data(employeeAddedDepartment)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

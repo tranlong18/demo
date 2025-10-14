@@ -20,4 +20,6 @@ public interface EmployeeService {
     List<EmployeeDTO> getAllEmployeeWithAccount();
 
     EmployeeDTO getEmployeeWithAccountById(Long employeeId);
+
+    EmployeeDTO addDepartmentForEmployee (Long employeeId, Long departmentId);
 }

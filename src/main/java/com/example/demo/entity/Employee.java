@@ -34,4 +34,8 @@ public class Employee {
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

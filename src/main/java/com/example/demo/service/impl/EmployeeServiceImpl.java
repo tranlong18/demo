@@ -1,9 +1,11 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.EmployeeDTO;
+import com.example.demo.entity.Department;
 import com.example.demo.entity.Employee;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.EmployeeMapper;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
@@ -51,7 +56,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setAge(updateEmployee.getAge());
         employee.setGender(updateEmployee.getGender());
         Employee updatedEmployee = employeeRepository.save(employee);
-
         return EmployeeMapper.mapToEmployeeDTO(updatedEmployee);
     }
 
@@ -65,13 +69,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> getAllEmployeeWithAccount() {
         List<Employee> employees = employeeRepository.findAllWithAccount();
-        return employees.stream().map(EmployeeMapper::mapToEmployeeWithAccountDTO).collect(Collectors.toList());
+        return employees.stream().map(EmployeeMapper::mapToEmployeeDTO).collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO getEmployeeWithAccountById(Long employeeId) {
         Employee employee = employeeRepository.findByIdWithAccount(employeeId);
-        return EmployeeMapper.mapToEmployeeWithAccountDTO(employee);
+        return EmployeeMapper.mapToEmployeeDTO(employee);
     }
 
+    @Override
+    public EmployeeDTO addDepartmentForEmployee(Long employeeId, Long departmentId) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                () -> new ResourceNotFoundException("Employee is not exist with given id: " + employeeId));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(
+                () -> new ResourceNotFoundException("Department is not exist with given id: " + departmentId));
+        employee.setDepartment(department);
+        Employee saveEmployee = employeeRepository.save(employee);
+        return EmployeeMapper.mapToEmployeeDTO(saveEmployee);
+    }
 }
