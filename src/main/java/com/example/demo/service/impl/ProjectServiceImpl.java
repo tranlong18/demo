@@ -49,4 +49,22 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectRepository.findAll();
         return projects.stream().map(ProjectMapper::mapToProjectDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public ProjectDTO getProjectById(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+        return ProjectMapper.mapToProjectDTO(project);
+    }
+
+    @Override
+    public void deleteProject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+        for (Employee emp : project.getEmployees()) {
+            emp.getProjects().remove(project);
+        }
+        project.getEmployees().clear();
+        projectRepository.delete(project);
+    }
 }

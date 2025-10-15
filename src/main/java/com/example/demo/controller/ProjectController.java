@@ -53,4 +53,24 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ApiResponse<ProjectDTO>> getProjectById(@PathVariable Long projectId) {
+        ProjectDTO project = projectService.getProjectById(projectId);
+        ApiResponse<ProjectDTO> response = ApiResponse.<ProjectDTO>builder()
+                .status(HttpStatus.OK.value())
+                .data(project)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long projectId) {
+        projectService.deleteProject(projectId);
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+                .status(HttpStatus.OK.value())
+                .message("deleted project")
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }
