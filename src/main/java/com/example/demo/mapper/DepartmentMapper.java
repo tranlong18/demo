@@ -13,7 +13,7 @@ public class DepartmentMapper {
         if (!department.getEmployees().isEmpty()) {
             employeeDTOList = department.getEmployees()
                     .stream()
-                    .map(e -> new EmployeeDTO(e.getId(), e.getFirstName(), e.getLastName(), e.getGender(), e.getAge(), null, null)).toList();
+                    .map(e -> new EmployeeDTO(e.getId(), e.getFirstName(), e.getLastName(), e.getGender(), e.getAge(), null, null, null)).toList();
         }
         return new DepartmentDTO(
                 department.getId(),

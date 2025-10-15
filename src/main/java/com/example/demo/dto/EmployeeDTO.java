@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +22,5 @@ public class EmployeeDTO {
     private Integer age;
     private AccountDTO account;
     private DepartmentDTO department;
+    private Set<Long> projectIds;
 }
