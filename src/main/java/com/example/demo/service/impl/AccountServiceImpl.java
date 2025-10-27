@@ -10,6 +10,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,13 +22,15 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO) {
         Employee employee = employeeRepository.findById(accountDTO.getEmployeeId())
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found with ID: " + accountDTO.getEmployeeId()));
-
         Account account = AccountMapper.mapToAccount(accountDTO);
         account.setEmployee(employee);
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.mapToAccountDTO(savedAccount);
     }

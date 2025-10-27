@@ -12,10 +12,10 @@ public class AccountMapper {
                 ? account.getEmployee().getId()
                 : null;
         return new AccountDTO(
-                account.getId(),
+                null,
                 account.getEmail(),
-                account.getPassword(),
-                employeeId);
+                null,
+                null);
     }
     public static Account mapToAccount(AccountDTO accountDTO) {
         Account account = new Account();
