@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private static final String[] WHILE_LIST = {
-            "/login", "/api/account"
+            "/auth/login", "/api/account"
     };
 
     private UserDetailServiceImpl userDetailsService;
